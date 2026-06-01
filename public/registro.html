@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro - Buena Vista</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+
+        background-image: url("fondo.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+      .header {
+        padding: 20px 40px;
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: 1px;
+      }
+      .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .form-box {
+        width: 100%;
+        max-width: 350px;
+        text-align: center;
+      }
+      h1 {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        color: #000;
+      }
+      input {
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 10px;
+        background-color: #f0f0f0;
+        font-size: 14px;
+        box-sizing: border-box;
+        outline: none;
+      }
+      button {
+        width: 100%;
+        padding: 15px;
+        background-color: #1a1a1a;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: 0.3s;
+        margin-top: 10px;
+      }
+      button:hover {
+        background-color: #333;
+      }
+      .footer-link {
+        display: block;
+        margin-top: 20px;
+        color: #666;
+        font-size: 14px;
+        text-decoration: none;
+      }
+      .footer-link span {
+        font-weight: bold;
+        color: #000;
+      }
+      .mensaje {
+        margin-top: 10px;
+        font-size: 14px;
+        display: none;
+      }
+      .exito {
+        color: #28a745;
+      }
+      .error {
+        color: #dc3545;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">BUENA VISTA</div>
+
+    <div class="main-container">
+      <div class="form-box">
+        <h1>Registro</h1>
+        <form id="form-registro">
+          <input
+            type="text"
+            id="nombre"
+            placeholder="Nombre de Usuario"
+            required
+          />
+          <input type="email" id="correo" placeholder="Correo" required />
+          <input
+            type="password"
+            id="password"
+            placeholder="Contraseña"
+            required
+          />
+
+          <button type="submit">Registrarse</button>
+          <p class="mensaje" id="mensaje-feedback"></p>
+        </form>
+        <a href="login.html" class="footer-link"
+          >¿Ya tienes cuenta? <span>Inicia sesion aqui</span></a
+        >
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("form-registro")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Recolectamos datos (Por defecto forzamos rol 'Cliente' por seguridad)
+          const nuevoUsuario = {
+            nombre: document.getElementById("nombre").value,
+            correo: document.getElementById("correo").value,
+            password: document.getElementById("password").value,
+            rol: "Cliente",
+          };
+
+          const feedback = document.getElementById("mensaje-feedback");
+
+          fetch("http://localhost:3000/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(nuevoUsuario),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              feedback.style.display = "block";
+              if (data.mensaje === "Usuario registrado con éxito") {
+                feedback.className = "mensaje exito";
+                feedback.innerText =
+                  "¡Registro exitoso! Redirigiendo a login...";
+                setTimeout(() => (window.location.href = "login.html"), 2000);
+              } else {
+                feedback.className = "mensaje error";
+                feedback.innerText = data.mensaje;
+              }
+            })
+            .catch((err) => {
+              feedback.className = "mensaje error";
+              feedback.innerText = "Error de conexión con el servidor.";
+              feedback.style.display = "block";
+            });
+        });
+    </script>
+  </body>
+</html>

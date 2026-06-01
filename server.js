@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-// 1. Llamamos a la base de datos para que se conecte al encender
+// Conexión a Base de Datos
 const db = require("./src/config/db");
 
 const app = express();
@@ -10,15 +10,15 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static("public")); // Para tu panel HTML
 
-// 2. Importar tus nuevas rutas
+// 1. Importar TODAS las rutas (Las tuyas y las del Integrante 2)
 const adminRoutes = require("./src/routes/adminRoutes");
-const menuRoutes = require("./src/routes/menuRoutes");
+const authRoutes = require("./src/routes/authRoutes");
 
-// 3. Usar las rutas en el servidor
+// 2. Activar las rutas en el servidor
 app.use("/api/admin", adminRoutes);
-app.use("/api/menu", menuRoutes);
+app.use("/api/auth", authRoutes);
 
 // Ruta de prueba
 app.get("/", (req, res) => {

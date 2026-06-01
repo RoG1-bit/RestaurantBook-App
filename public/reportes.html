@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reportes - RestaurantBook</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7f6;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-admin {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+      .header-admin h1 {
+        color: #333;
+        border: none;
+        margin: 0;
+        padding: 0;
+        font-size: 24px;
+      }
+      .btn-logout {
+        background-color: #1a1a1a;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        width: auto;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .btn-logout:hover {
+        background-color: #dc3545;
+      }
+
+      .nav-menu {
+        margin-bottom: 20px;
+      }
+      .nav-menu a {
+        text-decoration: none;
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        border-radius: 5px;
+        margin-right: 5px;
+      }
+      .nav-menu a:hover {
+        background: #0056b3;
+      }
+      .chart-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 40px auto;
+      }
+      .stats-grid {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+      }
+      .stat-card {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        width: 30%;
+        border: 1px solid #ddd;
+      }
+      .stat-card h3 {
+        margin: 0;
+        color: #666;
+        font-size: 16px;
+      }
+      .stat-card p {
+        margin: 10px 0 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-admin">
+        <h1>Reporte Operativo de Reservaciones</h1>
+        <button class="btn-logout" onclick="cerrarSesion()">
+          🚪 Cerrar Sesión
+        </button>
+      </div>
+
+      <div class="nav-menu">
+        <a href="admin.html">⬅ Volver a Usuarios</a>
+        <a href="#" onclick="window.print()">🖨️ Imprimir Reporte</a>
+      </div>
+
+      <div class="stats-grid" id="resumen-stats">
+        <div class="stat-card">
+          <h3>Total Confirmadas</h3>
+          <p id="total-confirmadas">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Pendientes</h3>
+          <p id="total-pendientes">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Canceladas</h3>
+          <p id="total-canceladas">0</p>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="graficoReservas"></canvas>
+      </div>
+    </div>
+
+    <script>
+      // 0. EL CANDADO DE SEGURIDAD
+      const tokenValido = localStorage.getItem("token");
+      if (!tokenValido) {
+        alert("Acceso denegado. Debes iniciar sesión primero.");
+        window.location.href = "login.html";
+      }
+
+      // Función para cerrar sesión
+      function cerrarSesion() {
+        if (confirm("¿Seguro que deseas salir?")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("usuario");
+          window.location.href = "login.html";
+        }
+      }
+
+      // Consumir la API de reportes
+      fetch("http://localhost:3000/api/admin/reportes/reservas")
+        .then((res) => res.json())
+        .then((datos) => {
+          let etiquetas = [];
+          let cantidades = [];
+          let colores = [];
+
+          datos.forEach((item) => {
+            etiquetas.push(item.estado);
+            cantidades.push(item.total);
+
+            if (item.estado === "Confirmada") {
+              colores.push("#28a745");
+              document.getElementById("total-confirmadas").innerText =
+                item.total;
+            } else if (item.estado === "Pendiente") {
+              colores.push("#ffc107");
+              document.getElementById("total-pendientes").innerText =
+                item.total;
+            } else if (item.estado === "Cancelada") {
+              colores.push("#dc3545");
+              document.getElementById("total-canceladas").innerText =
+                item.total;
+            }
+          });
+
+          const ctx = document
+            .getElementById("graficoReservas")
+            .getContext("2d");
+          new Chart(ctx, {
+            type: "doughnut",
+            data: {
+              labels: etiquetas,
+              datasets: [
+                { data: cantidades, backgroundColor: colores, borderWidth: 1 },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { position: "bottom" } },
+            },
+          });
+        })
+        .catch((error) => console.error("Error cargando los reportes:", error));
+    </script>
+  </body>
+</html>

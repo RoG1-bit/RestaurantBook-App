@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Buena Vista</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+
+        background-image: url("fondo.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .header {
+        padding: 20px 40px;
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: 1px;
+        color: #000;
+      }
+      .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Caja del formulario translúcida para que resalte sobre el fondo */
+      .form-box {
+        width: 100%;
+        max-width: 350px;
+        text-align: center;
+        background: rgba(
+          255,
+          255,
+          255,
+          0.95
+        ); /* Fondo blanco un poco transparente */
+        padding: 40px 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        color: #000;
+      }
+      input {
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+        box-sizing: border-box;
+        outline: none;
+      }
+      input:focus {
+        border-color: #1a1a1a;
+      }
+
+      /* Estilo del botón de Olvidé Contraseña */
+      .forgot-pass {
+        display: block;
+        text-align: right;
+        color: #666;
+        font-size: 12px;
+        text-decoration: none;
+        margin-top: -5px;
+        margin-bottom: 25px;
+        cursor: pointer;
+      }
+      .forgot-pass:hover {
+        color: #1a1a1a;
+        font-weight: bold;
+      }
+
+      button {
+        width: 100%;
+        padding: 15px;
+        background-color: #1a1a1a;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+      button:hover {
+        background-color: #333;
+        transform: translateY(-2px);
+      }
+
+      .footer-link {
+        display: block;
+        margin-top: 20px;
+        color: #666;
+        font-size: 14px;
+        text-decoration: none;
+      }
+      .footer-link span {
+        font-weight: bold;
+        color: #000;
+      }
+      .error {
+        color: #dc3545;
+        margin-top: 10px;
+        font-size: 14px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">BUENA VISTA</div>
+
+    <div class="main-container">
+      <div class="form-box">
+        <h1>Login</h1>
+        <form id="form-login">
+          <input type="email" id="correo" placeholder="Correo" required />
+          <input
+            type="password"
+            id="password"
+            placeholder="Contraseña"
+            required
+          />
+
+          <a class="forgot-pass" id="btn-olvide">¿Olvidaste tu contraseña?</a>
+
+          <button type="submit">Iniciar Sesion</button>
+          <p class="error" id="mensaje-error"></p>
+        </form>
+        <a href="registro.html" class="footer-link"
+          >¿No tienes cuenta? <span>Regístrate</span></a
+        >
+      </div>
+    </div>
+
+    <script>
+      // 1. Lógica del Login
+      document
+        .getElementById("form-login")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const correo = document.getElementById("correo").value;
+          const password = document.getElementById("password").value;
+          const errorMsg = document.getElementById("mensaje-error");
+
+          fetch("http://localhost:3000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ correo, password }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.token) {
+                // Guardamos llave y datos del usuario
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+                // REDIRECCIÓN INTELIGENTE SEGÚN EL ROL
+                if (data.usuario.rol === "Administrador") {
+                  window.location.href = "admin.html"; // El admin va a su panel
+                } else if (data.usuario.rol === "Mesero") {
+                  window.location.href = "mesas.html"; // El mesero va al control de mesas
+                } else {
+                  window.location.href = "menu.html"; // El cliente va a ver el menú
+                }
+              } else {
+                errorMsg.innerText = data.mensaje;
+                errorMsg.style.display = "block";
+              }
+            })
+            .catch((err) => {
+              errorMsg.innerText = "Error de conexión con el servidor.";
+              errorMsg.style.display = "block";
+            });
+        });
+
+      // 2. Lógica de "Olvidé mi contraseña"
+      document
+        .getElementById("btn-olvide")
+        .addEventListener("click", function () {
+          const correoIngresado = document.getElementById("correo").value;
+          let correoRecuperacion = correoIngresado;
+
+          if (!correoRecuperacion) {
+            correoRecuperacion = prompt(
+              "Por favor, ingresa tu correo electrónico para recuperar tu contraseña:",
+            );
+          }
+
+          if (correoRecuperacion) {
+            alert(
+              `✅ ¡Listo! Se han enviado las instrucciones de recuperación al correo: ${correoRecuperacion}\n\nPor favor, revisa tu bandeja de entrada o spam.`,
+            );
+          }
+        });
+    </script>
+  </body>
+</html>

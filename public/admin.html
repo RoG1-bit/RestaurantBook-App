@@ -19,11 +19,50 @@
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
-      h1 {
-        color: #333;
+
+      /* Estilos del encabezado */
+      .header-admin {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         border-bottom: 2px solid #007bff;
         padding-bottom: 10px;
+        margin-bottom: 20px;
       }
+      .header-admin h1 {
+        color: #333;
+        border: none;
+        margin: 0;
+        padding: 0;
+      }
+      .btn-logout {
+        background-color: #1a1a1a;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        width: auto;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .btn-logout:hover {
+        background-color: #dc3545;
+      }
+
+      /* Estilo del enlace solucionado (no-inline-styles) */
+      .link-reporte {
+        display: inline-block;
+        margin-bottom: 15px;
+        color: #007bff;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      .link-reporte:hover {
+        text-decoration: underline;
+        color: #0056b3;
+      }
+
       .form-container {
         background: #f9f9f9;
         padding: 15px;
@@ -38,25 +77,32 @@
         margin: 5px 0;
         border: 1px solid #ccc;
         border-radius: 4px;
+        box-sizing: border-box;
       }
-      button {
+      .btn-guardar {
         background-color: #28a745;
         color: white;
         border: none;
         cursor: pointer;
         font-weight: bold;
+        width: 100%;
       }
-      button:hover {
+      .btn-guardar:hover {
         background-color: #218838;
       }
       .btn-danger {
         background-color: #dc3545;
+        color: white;
         padding: 5px 10px;
         font-size: 12px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
       }
       .btn-danger:hover {
         background-color: #c82333;
       }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -91,7 +137,16 @@
   </head>
   <body>
     <div class="container">
-      <h1>Panel de Control - Administrador</h1>
+      <div class="header-admin">
+        <h1>Panel de Control - Administrador</h1>
+        <button class="btn-logout" onclick="cerrarSesion()">
+          🚪 Cerrar Sesión
+        </button>
+      </div>
+
+      <a href="reportes.html" class="link-reporte"
+        >📊 Ver Reporte de Reservaciones</a
+      >
 
       <div class="form-container">
         <h3>Agregar Nuevo Usuario</h3>
@@ -101,25 +156,34 @@
             id="nombre"
             placeholder="Nombre completo"
             required
+            aria-label="Nombre de usuario"
           />
           <input
             type="email"
             id="correo"
             placeholder="Correo electrónico"
             required
+            aria-label="Correo electrónico"
           />
           <input
             type="password"
             id="password"
             placeholder="Contraseña"
             required
+            aria-label="Contraseña"
           />
-          <select id="rol" aria-label="Rol del usuario">
+
+          <select
+            id="rol"
+            aria-label="Seleccionar el rol del usuario"
+            title="Seleccione un rol"
+          >
             <option value="Cliente">Cliente</option>
             <option value="Mesero">Mesero</option>
             <option value="Administrador">Administrador</option>
           </select>
-          <button type="submit">Guardar Usuario</button>
+
+          <button type="submit" class="btn-guardar">Guardar Usuario</button>
         </form>
       </div>
 
@@ -140,15 +204,31 @@
     </div>
 
     <script>
+      // EL CANDADO DE SEGURIDAD
+      const tokenValido = localStorage.getItem("token");
+      if (!tokenValido) {
+        alert("Acceso denegado. Debes iniciar sesión primero.");
+        window.location.href = "login.html";
+      }
+
+      // Función para cerrar sesión
+      function cerrarSesion() {
+        if (confirm("¿Seguro que deseas salir?")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("usuario");
+          window.location.href = "login.html";
+        }
+      }
+
+      // LÓGICA DE USUARIOS
       const apiUrl = "http://localhost:3000/api/admin/usuarios";
 
-      // 1. Cargar Usuarios (GET)
       function cargarUsuarios() {
         fetch(apiUrl)
           .then((res) => res.json())
           .then((usuarios) => {
             const tabla = document.getElementById("tabla-usuarios");
-            tabla.innerHTML = ""; // Limpiar antes de cargar
+            tabla.innerHTML = "";
 
             usuarios.forEach((user) => {
               let estadoColor =
@@ -166,12 +246,10 @@
           .catch((err) => console.error("Error al cargar:", err));
       }
 
-      // 2. Crear Usuario (POST)
       document
         .getElementById("form-usuario")
         .addEventListener("submit", function (e) {
-          e.preventDefault(); // Evita que la página se recargue
-
+          e.preventDefault();
           const nuevoUsuario = {
             nombre: document.getElementById("nombre").value,
             correo: document.getElementById("correo").value,
@@ -186,29 +264,27 @@
           })
             .then((res) => res.json())
             .then((data) => {
-              alert(data.mensaje); // Mostrar mensaje de éxito
-              document.getElementById("form-usuario").reset(); // Limpiar formulario
-              cargarUsuarios(); // Recargar la tabla
+              alert(data.mensaje);
+              document.getElementById("form-usuario").reset();
+              cargarUsuarios();
             })
             .catch((err) =>
               alert("Error al crear usuario. Revisa si el correo ya existe."),
             );
         });
 
-      // 3. Eliminar Usuario (DELETE)
       function eliminarUsuario(id) {
         if (confirm("¿Estás seguro de eliminar este usuario?")) {
           fetch(`${apiUrl}/${id}`, { method: "DELETE" })
             .then((res) => res.json())
             .then((data) => {
               alert(data.mensaje);
-              cargarUsuarios(); // Recargar la tabla
+              cargarUsuarios();
             })
             .catch((err) => console.error("Error al eliminar:", err));
         }
       }
 
-      // Cargar datos al abrir la página
       cargarUsuarios();
     </script>
   </body>
