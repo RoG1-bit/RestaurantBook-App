@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/reservationStyle.css">
+    <title> Nuevas Reservaciones</title>
+</head>
+
+<body>
+
+    <header>
+        <button id="menuBtn">☰</button>
+        <h2>Reservas Buena Vista</h2>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="reservations.html">📅 Reservaciones</a>
+        <a href="../menu.html">📖 Menú</a>
+    </nav>
+
+    <main class="contenido">
+
+        <h1>Crear Nueva Reserva</h1>
+
+        <section class="card">
+
+            <form id="formReserva">
+
+                <div class="form-grid">
+
+                    <!-- Fecha -->
+                    <div>
+                        <label for="fecha">Fecha</label>
+                        <input type="date" id="fecha">
+                    </div>
+
+                    <!-- Personas -->
+                    <div>
+                        <label for="personas">Número de Personas</label>
+                        <input type="number" id="personas" min="1">
+                    </div>
+
+                    <!-- Horarios -->
+                    <div class="full-width">
+
+                        <label>Hora Preferida</label>
+
+                        <div class="horas">
+                            <button type="button">5:00 pm</button>
+                            <button type="button">5:30 pm</button>
+                            <button type="button">6:00 pm</button>
+                            <button type="button">6:30 pm</button>
+                            <button type="button">7:00 pm</button>
+                            <button type="button">7:30 pm</button>
+                            <button type="button">8:00 pm</button>
+                            <button type="button">8:30 pm</button>
+                            <button type="button">9:00 pm</button>
+                            <button type="button">9:30 pm</button>
+                            <button type="button">10:00 pm</button>
+                        </div>
+
+                    </div>
+
+                    <!-- Nombre -->
+                    <div class="full-width">
+                        <label for="nombre">Nombre Completo</label>
+                        <input
+                            type="text"
+                            id="nombre"
+                            placeholder="Ej. Juan Pérez">
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div>
+                        <label for="telefono">Teléfono</label>
+                        <input
+                            type="tel"
+                            id="telefono"
+                            placeholder="7777-7777">
+                    </div>
+
+                    <!-- Correo -->
+                    <div>
+                        <label for="correo">Correo Electrónico</label>
+                        <input
+                            type="email"
+                            id="correo"
+                            placeholder="correo@ejemplo.com">
+                    </div>
+
+                    <!-- Solicitudes -->
+                    <div class="full-width">
+                        <label for="solicitudes">
+                            Solicitudes Especiales
+                        </label>
+
+                        <textarea
+                            id="solicitudes">
+                        </textarea>
+                    </div>
+
+                </div>
+
+                <div class="btn-reservar">
+                    <button type="submit">
+                        Confirmar Reserva
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="../js/reservationsJs.js"></script>
+
+</body>
+</html>

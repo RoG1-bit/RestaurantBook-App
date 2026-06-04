@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar reservaciones</title>
+    <link rel="stylesheet" href="../css/adminReservations.css">
+</head>
+<body>
+
+     <header>
+        <button id="menuBtn">☰</button>
+        <h2>Reservas Buena Vista</h2>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="reservations.html">📅 Reservaciones</a>
+        <a href="../menu.html">📖 Menú</a>
+    </nav>
+
+    <div class="admin-filtros">
+
+    <button class="tab active" data-filtro="todas">
+        Todas
+    </button>
+
+    <button class="tab" data-filtro="confirmada">
+        Confirmadas
+    </button>
+
+    <button class="tab" data-filtro="cancelada">
+        Canceladas
+    </button>
+
+</div>
+
+<div id="listaReservas"></div>
+
+<script src="../js/adminReservations.js"></script>
+</body>
+</html>
