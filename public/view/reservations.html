@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/reservationsStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Current reservations</title>
+
+</head>
+<body>
+     <header>
+        <button id="menuBtn">☰</button>
+        <h2>Reservas Buena Vista</h2>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="newReservation.html">📅 Nueva Reservacion</a>
+        <a href="../menu.html">📖 Menú</a>
+    </nav>
+    
+   <section class="mis-reservas" id="listaReservas">
+
+</section>
+
+<div id="modalEditar" class="modal">
+
+    <div class="edit-card">
+
+        <h2>Editar Reserva</h2>
+
+        <form id="formEditarReserva">
+
+            <div class="campo">
+                <label>Fecha</label>
+                <input type="date" id="editFecha">
+            </div>
+
+            <div class="campo">
+                <label>Número de Personas</label>
+                <input type="number" id="editPersonas" min="1" >
+            </div>
+
+            <div class="campo">
+            <label>Hora</label>
+            <select name="hora" id="editHora">
+                <option value="17:00:00">5:00 PM</option>
+                <option value="17:30:00">5:30 PM</option>
+                <option value="18:00:00">6:00 PM</option>
+                <option value="18:30:00">6:30 PM</option>
+                <option value="19:00:00">7:00 PM</option>
+                <option value="19:30:00">7:30 PM</option>
+            </select>
+        </div>
+
+            <div class="acciones-form">
+
+                <button
+                    type="button"
+                    id="btnCerrar"
+                    class="btn-secundario">
+
+                    Cancelar
+
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-principal">
+
+                    Guardar Cambios
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="modal" id="modalCancelar">
+
+    <div class="edit-card">
+
+        <h2>Confirmar cancelación</h2>
+
+        <p>¿Seguro que deseas cancelar esta reserva?</p>
+
+        <div class="acciones-form">
+
+            <button class="btn-secundario" id="btnNoCancelar">
+                No
+            </button>
+
+            <button class="btn-principal" id="btnSiCancelar">
+                Sí, cancelar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="../js/currentReservations.js"></script>
+
+</body>
+</html>

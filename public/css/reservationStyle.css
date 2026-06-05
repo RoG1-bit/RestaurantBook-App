@@ -1,0 +1,225 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    background:#18344b;
+    color:white;
+}
+
+/* HEADER */
+
+header{
+    background:#CFE8F3;
+    color:black;
+    height:60px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    position:relative;
+}
+
+#menuBtn{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+
+    border:none;
+    background:none;
+    font-size:28px;
+    cursor:pointer;
+
+    color:black;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+
+    top:60px;
+    left:-250px;
+
+    width:250px;
+    height:100vh;
+
+    background:#0b2438;
+
+    transition:0.3s;
+
+    padding-top:20px;
+
+    z-index:1000;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.sidebar a{
+    display:block;
+
+    color:white;
+    text-decoration:none;
+
+    padding:15px 25px;
+
+    transition:.2s;
+}
+
+.sidebar a:hover{
+    background:#18344b;
+}
+
+/* CONTENIDO */
+
+.contenido{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding:40px 20px;
+}
+
+.contenido h1{
+    margin-bottom:25px;
+}
+
+/* TARJETA */
+
+.card{
+    width:100%;
+    max-width:850px;
+
+    background:#f4f4f4;
+    color:#222;
+
+    border-radius:20px;
+
+    padding:35px;
+}
+
+/* GRID */
+
+.form-grid{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:25px;
+}
+
+.full-width{
+    grid-column:1 / -1;
+}
+
+/* LABELS */
+
+label{
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:16px;
+    font-weight:bold;
+}
+
+/* INPUTS */
+
+input,
+textarea{
+    width:100%;
+
+    border:1px solid #dcdcdc;
+
+    border-radius:12px;
+
+    padding:12px 15px;
+
+    font-size:16px;
+}
+
+input:focus,
+textarea:focus{
+    outline:none;
+    border-color:#64b5d6;
+}
+
+textarea{
+    height:120px;
+    resize:none;
+}
+
+/* HORARIOS */
+
+.horas{
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:10px;
+}
+
+.horas button{
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+.horas button:hover{
+    background:#64b5d6;
+    color:white;
+}
+
+
+.horas button.seleccionada{
+    background:#64b5d6;
+    color:white;
+}
+
+/* BOTON RESERVAR */
+
+.btn-reservar{
+    margin-top:25px;
+}
+
+.btn-reservar button{
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#5DADE2;
+
+    color:white;
+
+    font-size:18px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+.btn-reservar button:hover{
+    opacity:0.9;
+}

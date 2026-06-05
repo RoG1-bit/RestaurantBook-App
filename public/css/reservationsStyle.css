@@ -1,0 +1,269 @@
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+/* HEADER */
+
+header{
+    background:#CFE8F3;
+    color:black;
+    height:60px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    position:relative;
+    margin-bottom: 30px;
+}
+
+#menuBtn{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+
+    border:none;
+    background:none;
+    font-size:28px;
+    cursor:pointer;
+
+    color:black;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+
+    top:60px;
+    left:-250px;
+
+    width:250px;
+    height:100vh;
+
+    background:#0b2438;
+
+    transition:0.3s;
+
+    padding-top:20px;
+
+    z-index:1000;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.sidebar a{
+    display:block;
+
+    color:white;
+    text-decoration:none;
+
+    padding:15px 25px;
+
+    transition:.2s;
+}
+
+.sidebar a:hover{
+    background:#18344b;
+}
+
+.mis-reservas{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+    max-width:1100px;
+    margin:auto;
+}
+.reserva-card{
+    background:white;
+    color:#222;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+    border-top:6px solid transparent;
+}
+
+.reserva-card.confirmada{
+    border-top-color:#2ecc71;
+}
+
+.reserva-card.pendiente{
+    border-top-color:#f39c12;
+}
+
+.reserva-card.cancelada{
+    border-top-color:#e74c3c;
+}
+
+.reserva-header{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:15px;
+}
+
+.estado-confirmada{
+    color:#2ecc71;
+    font-weight:bold;
+}
+
+.estado-pendiente{
+    color:#f39c12;
+    font-weight:bold;
+}
+
+.estado-cancelada{
+    color:#e74c3c;
+    font-weight:bold;
+}
+
+.btn-editar{
+    background:#8fd3e8;
+    color:#123;
+}
+
+.btn-editar:hover{
+    background:#76c4dd;
+}
+.btn-cancelar{
+    background:#ffe0e0;
+    color:#b84040;
+}
+
+.btn-cancelar:hover{
+    background:#ffd0d0;
+}
+
+.acciones{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+.acciones button{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    border:none;
+    border-radius:10px;
+
+    padding:10px 16px;
+
+    cursor:pointer;
+}
+
+
+
+.modal{
+    display:none;
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.5);
+
+    justify-content:center;
+    align-items:center;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.edit-card{
+    max-width:450px;
+
+    margin:40px auto;
+
+    background:white;
+    color:#222;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.12);
+}
+
+.edit-card h2{
+    margin-bottom:25px;
+
+    color:#2c3e50;
+}
+.campo{
+    margin-bottom:20px;
+    margin-right: 20px;
+}
+
+.campo label{
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+    font-weight:600;
+}
+
+.campo input{
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #dcdcdc;
+
+    border-radius:10px;
+}
+.acciones-form{
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    margin-top:30px;
+}
+
+.btn-secundario{
+    background:#f1f1f1;
+
+    color:#444;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px 18px;
+
+    cursor:pointer;
+}
+
+.btn-principal{
+    background:#64b5d6;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px 18px;
+
+    cursor:pointer;
+}
