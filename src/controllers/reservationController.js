@@ -40,7 +40,7 @@ exports.crearReserva = (req, res) => {
             const totalReservas =
             resultados[0].total;
 
-            if(totalReservas >= 25){
+            if(totalReservas >= 12){
 
                 return res.status(400).json({
                     mensaje:
@@ -195,6 +195,41 @@ exports.actualizarReserva = (req, res) => {
             res.status(200).json({
                 mensaje: "Reserva actualizada"
             });
+
+        }
+    );
+
+};
+
+exports.obtenerReservasPorCorreo = (req, res) => {
+
+    const { correo } = req.params;
+
+    const query = `
+        SELECT *
+        FROM reservas
+        WHERE contacto LIKE ?
+        ORDER BY fecha ASC,
+                 hora_preferida ASC
+    `;
+
+    db.query(
+        query,
+        [`%${correo}%`],
+        (error, resultados) => {
+
+            if(error){
+
+                console.error(error);
+
+                return res.status(500).json({
+                    mensaje:
+                    "Error al obtener reservas"
+                });
+
+            }
+
+            res.status(200).json(resultados);
 
         }
     );

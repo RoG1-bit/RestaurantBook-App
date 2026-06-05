@@ -19,6 +19,20 @@ document.addEventListener("click", (e) => {
 });
 
 
+// ================= USUARIO LOGUEADO =================
+
+const usuario =
+JSON.parse(localStorage.getItem("usuario"));
+
+if(usuario){
+
+    document.getElementById("nombre").value =
+    usuario.nombre;
+
+    document.getElementById("correo").value =
+    usuario.correo;
+}
+
 // ================= HORARIOS =================
 
 let horaSeleccionada = "19:00:00";

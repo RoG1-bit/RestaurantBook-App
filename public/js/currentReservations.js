@@ -7,7 +7,12 @@ menuBtn.addEventListener("click", () => {
     sidebar.classList.toggle("active");
 });
 
-// ================= MODAL Editar =================
+// Usuario logueado
+const usuario =
+JSON.parse(localStorage.getItem("usuario"));
+const correoUsuario = usuario.correo;
+
+// Modal Editar
 const modal = document.getElementById("modalEditar");
 const btnCerrar = document.getElementById("btnCerrar");
 
@@ -16,7 +21,7 @@ let reservaSeleccionada = null;
 const formEditar =
 document.getElementById("formEditarReserva");
 
-// ================= MODAL cancelar =================
+// Modal cancelar 
 const modalCancelar = document.getElementById("modalCancelar");
 const btnNoCancelar = document.getElementById("btnNoCancelar");
 const btnSiCancelar = document.getElementById("btnSiCancelar");
@@ -35,7 +40,7 @@ btnNoCancelar.addEventListener("click", () => {
 });
 
 
-// ================= cancelar =================
+//cancelar
 
 btnSiCancelar.addEventListener("click", async () => {
 
@@ -57,18 +62,23 @@ btnSiCancelar.addEventListener("click", async () => {
 
 });
 
-// ================= CARGAR DATOS =================
+// Cargando datos
 async function cargarReservas(){
 
     try{
 
         const respuesta = await fetch(
-            "http://localhost:3000/api/reservas"
-        );
+           "http://localhost:3000/api/reservas"
+            );
 
-        const reservas = await respuesta.json();
+            const reservas = await respuesta.json();
 
-        mostrarReservas(reservas);
+            const reservasUsuario =
+            reservas.filter(r =>
+                r.contacto.includes(usuario.correo)
+            );
+
+mostrarReservas(reservasUsuario);
 
     }
     catch(error){
@@ -154,7 +164,7 @@ function mostrarReservas(reservas){
 }
 
 
-// ================= CLICK GLOBAL (TODO EN UNO) =================
+//  CLICK GLOBAL (TODO EN UNO) 
 document.addEventListener("click", async (e) => {
 
     // ----- SIDEBAR -----

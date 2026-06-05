@@ -18,6 +18,10 @@ router.put(
     "/reservas/:id",
     reservationController.actualizarReserva
 );
+router.get(
+    "/reservas/correo/:correo",
+    reservationController.obtenerReservasPorCorreo
+);
 
 router.get(
     "/reservas",
